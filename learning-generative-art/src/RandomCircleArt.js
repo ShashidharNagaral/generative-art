@@ -1,5 +1,5 @@
 import p5 from "p5";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 const width = 500;
 const height = 500;
@@ -22,36 +22,57 @@ const randomPosition = (w, h, offset = 0) => {
   return [x, y];
 };
 
-const createCircle = (P, posx, posy, d) => {
-  P.fill(randomColor(P));
-  P.ellipse(posx, posy, d);
+const createCircle = (p, posx, posy, d) => {
+  p.fill(randomColor(p));
+  p.ellipse(posx, posy, d);
 };
-const sketch = (P) => {
-  P.setup = () => {
-    P.createCanvas(width, height);
-    P.background(200);
-    P.noLoop();
+const sketch = (p) => {
+  p.setup = () => {
+    id = p.createCanvas(width, height);
+    p.background(200);
+    p.noLoop();
+    console.log("setup");
   };
 
   let count = 50;
-  P.draw = () => {
-    while (count--) {
-      let d = P.random(20, 60);
-      let pos = randomPosition(width, height, d / 2);
-      P.fill(randomColor(P));
-      createCircle(P, pos[0], pos[1], d);
+  p.draw = () => {
+    p.background(200);
+    console.log("draw");
+    // while (count--) {
+    let d = p.random(20, 60);
+    let pos = randomPosition(width, height, d / 2);
+    p.fill(randomColor(p));
+    createCircle(p, pos[0], pos[1], d);
+    // }
+  };
+
+  p.keyPressed = () => {
+    if (p.keyCode === p.ENTER) {
+      console.log("ENTER");
+      p.redraw();
+    }
+  };
+
+  p.mousePressed = () => {
+    if (
+      p.mouseX >= 0 &&
+      p.mouseX <= width &&
+      p.mouseY >= 0 &&
+      p.mouseY <= height
+    ) {
+      p.redraw();
     }
   };
 };
 
 const RandomCircleArt = () => {
   useEffect(() => {
-    const p5Instance = new p5(sketch, document.getElementById("canvas"));
+    const p = new p5(sketch, document.getElementById("random-circle-art"));
     return () => {
-      p5Instance.remove();
+      p.remove();
     };
   }, []);
-  return <div id="canvas"></div>;
+  return <div id="random-circle-art"></div>;
 };
 
 export { RandomCircleArt };
