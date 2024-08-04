@@ -1,7 +1,7 @@
 import p5 from "p5";
 import React, { useEffect, useRef } from "react";
 
-const width = 500;
+const width = 1000;
 const height = 500;
 
 const randomColor = (p) => {
@@ -22,33 +22,26 @@ const randomPosition = (w, h, offset = 0) => {
   return [x, y];
 };
 
-const createCircle = (p, posx, posy, d) => {
-  p.fill(randomColor(p));
-  p.ellipse(posx, posy, d);
-};
 const sketch = (p) => {
   p.setup = () => {
     id = p.createCanvas(width, height);
     p.background(200);
     p.noLoop();
-    console.log("setup");
   };
 
-  let count = 50;
+  let count = 100;
   p.draw = () => {
     p.background(200);
-    console.log("draw");
-    // while (count--) {
-    let d = p.random(20, 60);
-    let pos = randomPosition(width, height, d / 2);
-    p.fill(randomColor(p));
-    createCircle(p, pos[0], pos[1], d);
-    // }
+    for (let i = 0; i < count; i++) {
+      let d = p.random(10, 60);
+      let pos = randomPosition(width, height, d / 2);
+      p.fill(randomColor(p));
+      p.ellipse(pos[0], pos[1], d);
+    }
   };
 
   p.keyPressed = () => {
     if (p.keyCode === p.ENTER) {
-      console.log("ENTER");
       p.redraw();
     }
   };
